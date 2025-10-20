@@ -14,7 +14,12 @@ export default function CategoryTags({
   onSelect,
 }: CategoryTagsProps) {
   return (
-    <div className="overflow-x-auto overflow-y-hidden md:mx-0 md:px-0 animate-slide-in-up">
+    <div
+      className="
+        overflow-x-auto overflow-y-hidden md:mx-0 md:px-0 animate-slide-in-up
+        scrollbar-hide  /* 👈 custom utility */
+      "
+    >
       <div className={`flex gap-3 ${className}`}>
         <button
           onClick={() => onSelect(null)}

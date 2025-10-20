@@ -21,7 +21,7 @@ const Footer = () => {
             <Link
               key={index}
               href={item.link}
-              className="w-10 h-10 flex items-center justify-center rounded-full hover:bg-primary hover:text-foreground transition transform hover:scale-110 text-lg"
+              className="w-10 h-10 flex items-center justify-center text-lg"
             >
               {item.icon}
             </Link>
@@ -30,11 +30,11 @@ const Footer = () => {
 
         {/* Footer Links */}
         <div className="flex flex-wrap lg:flex-row flex-col items-center md:justify-center gap-4 md:gap-6 text-sm text-background">
-          <Link href="#" className="hover:text-primary transition">
+          <Link href="#">
             • Privacy Policy
           </Link>
 
-          <Link href="#" className="hover:text-primary transition">
+          <Link href="#">
             • Terms & Conditions
           </Link>
 

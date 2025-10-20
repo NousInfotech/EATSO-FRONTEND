@@ -21,7 +21,7 @@ const ProductImages = ({
   setMainImage: (idx: number) => void;
 }) => (
   <div className="space-y-4 animate-slide-in-left bg-gradient-to-b from-primary from-50% px-5 pb-5 pt-20">
-    <div className="w-full h-80 bg-gray-200 rounded-lg overflow-hidden">
+    <div className="w-full h-80 rounded-lg overflow-hidden">
       <Image
         width={1080}
         height={720}
@@ -30,7 +30,7 @@ const ProductImages = ({
         className="w-full h-full object-cover"
       />
     </div>
-    <div className="flex gap-3 overflow-x-auto pb-2">
+    <div className="flex gap-3 scrollbar-hide overflow-x-auto pb-2">
       {images.map((img, idx) => (
         <button
           key={idx}
@@ -60,23 +60,19 @@ const QuantitySelector = ({
   qty: number;
   setQty: (val: number) => void;
 }) => (
-  <div className="flex items-center gap-3 bg-gray-100 rounded-lg p-2">
+  <div className="flex items-center gap-3 rounded-lg px-4 py-2 border border-primary">
     <button
       onClick={() => setQty(Math.max(1, qty - 1))}
-      className="p-1 hover:bg-gray-200 rounded"
+      className="hover:bg-gray-200 rounded"
     >
       <Minus size={20} />
     </button>
-    <span className="w-8 text-center font-bold">{qty}</span>
-    <button
-      onClick={() => setQty(qty + 1)}
-      className="p-1 hover:bg-gray-200 rounded"
-    >
+    <span className="w-8 text-center">{qty}</span>
+    <button onClick={() => setQty(qty + 1)} className="rounded">
       <Plus size={20} />
     </button>
   </div>
 );
-
 // ✅ Action Buttons Component
 const ActionButtons = ({
   product,
@@ -88,24 +84,32 @@ const ActionButtons = ({
   qty: number;
   dispatch: AppDispatch;
   onContinue: () => void;
-}) => (
-  <div className="space-y-2">
-    <button
-      onClick={() => {
-        for (let i = 0; i < qty; i++) dispatch(addToCart(product));
-      }}
-      className="w-full bg-primary text-foreground font-bold py-4 rounded-lg hover:bg-primary"
-    >
-      Add {qty} to Cart
-    </button>
-    <button
-      onClick={onContinue}
-      className="w-full bg-gray-200 text-foreground font-bold py-3 rounded-lg hover:bg-gray-300"
-    >
-      Continue Shopping
-    </button>
-  </div>
-);
+}) => {
+  const [added, setAdded] = useState(false);
+
+  const handleAddToCart = () => {
+    for (let i = 0; i < qty; i++) dispatch(addToCart(product));
+    setAdded(true);
+    setTimeout(() => setAdded(false), 2000); // revert after 2 seconds
+  };
+
+  return (
+    <div className="flex items-center justify-center gap-3">
+      <button
+        onClick={handleAddToCart}
+        className="w-full bg-primary text-foreground py-3 rounded-lg"
+      >
+        {added ? "Added ✓" : `Add ${qty} to Cart`}
+      </button>
+      <button
+        onClick={onContinue}
+        className="w-full bg-primary text-foreground py-3 rounded-lg"
+      >
+        Back to Home
+      </button>
+    </div>
+  );
+};
 
 // ✅ Product Details Component
 const ProductDetails = ({

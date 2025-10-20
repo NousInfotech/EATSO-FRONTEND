@@ -1,49 +1,66 @@
 "use client";
 
-import { ShoppingCart, User, ArrowLeft } from "lucide-react";
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { usePathname, useRouter } from "next/navigation";
-import type { RootState } from "../Store/store";
 import Link from "next/link";
+import { ShoppingCart, User, ArrowLeft } from "lucide-react";
+import type { RootState } from "../Store/store";
 
 export default function Header() {
-  const cartCount = useSelector((state: RootState) => state.cart.cartCount);
-  const pathname = usePathname();
   const router = useRouter();
+  const pathname = usePathname();
+  const cartCount = useSelector((state: RootState) => state.cart.cartCount);
 
-  // Hide navbar on cart page
+  const [isMounted, setIsMounted] = useState(false);
+
+  // ✅ Prevent hydration mismatch by waiting for client mount
+  useEffect(() => setIsMounted(true), []);
+
+  // 🔹 Hide header on cart page
   if (pathname === "/cart") return null;
 
   const isNotHome = pathname !== "/";
 
   return (
-    <header className="absolute z-10 w-full top-0">
-      <div className="flex justify-between items-center px-6 py-4 max-w-[1440px] mx-auto">
+    <header className="absolute top-0 z-10 w-full">
+      <div className="flex items-center justify-between px-6 py-4 max-w-[1440px] mx-auto">
+        {/* Back Button */}
         {isNotHome && (
-          <button onClick={() => router.back()}>
+          <button onClick={() => router.back()} aria-label="Go Back">
             <ArrowLeft size={24} color="white" />
           </button>
         )}
 
+        {/* Logo */}
         <Link
-          href={"/"}
-          className={`text-2xl hover:brightness-120 cursor-pointer text-white`}
+          href="/"
+          className="text-2xl font-semibold text-white hover:brightness-110 transition"
         >
           Cloud Kitchen
         </Link>
 
+        {/* Right Icons */}
         <div className="flex items-center gap-4">
-          <button className="p-2 rounded-full hover:bg-primary">
+          {/* User Icon */}
+          <button
+            aria-label="User Account"
+            className="rounded-full p-1 hover:bg-primary/20 transition"
+          >
             <User size={24} color="white" />
           </button>
 
+          {/* Cart Icon */}
           <Link
-            href={"/cart"}
-            className="p-2 rounded-full hover:bg-primary relative"
+            href="/cart"
+            aria-label="Shopping Cart"
+            className="relative rounded-full p-1 hover:bg-primary/20 transition"
           >
             <ShoppingCart size={24} color="white" />
-            {cartCount > 0 && (
-              <span className="absolute -top-1 -right-1 bg-primary text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center text-white">
+
+            {/* Cart Badge */}
+            {isMounted && cartCount > 0 && (
+              <span className="absolute -top-1 -right-1 flex items-center justify-center w-5 h-5 text-xs font-bold text-white bg-primary rounded-full">
                 {cartCount}
               </span>
             )}

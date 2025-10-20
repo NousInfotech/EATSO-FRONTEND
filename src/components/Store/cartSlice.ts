@@ -1,10 +1,16 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { CartState, Product } from "@/types";
 
-const initialState: CartState = {
-  cart: [],
-  cartCount: 0,
+// ✅ Load from localStorage (only on client)
+const loadCart = (): CartState => {
+  if (typeof window !== "undefined") {
+    const saved = localStorage.getItem("cartState");
+    if (saved) return JSON.parse(saved);
+  }
+  return { cart: [], cartCount: 0 };
 };
+
+const initialState: CartState = loadCart();
 
 const cartSlice = createSlice({
   name: "cart",
@@ -24,17 +30,15 @@ const cartSlice = createSlice({
       const item = state.cart.find((item) => item.id === action.payload);
       if (item) {
         state.cartCount -= item.qty;
-        state.cart = state.cart.filter((item) => item.id !== action.payload);
+        state.cart = state.cart.filter((i) => i.id !== action.payload);
       }
     },
     updateQty: (state, action: PayloadAction<{ id: string; qty: number }>) => {
-      const item = state.cart.find((item) => item.id === action.payload.id);
+      const item = state.cart.find((i) => i.id === action.payload.id);
       if (item) {
         if (action.payload.qty <= 0) {
           state.cartCount -= item.qty;
-          state.cart = state.cart.filter(
-            (item) => item.id !== action.payload.id
-          );
+          state.cart = state.cart.filter((i) => i.id !== action.payload.id);
         } else {
           state.cartCount += action.payload.qty - item.qty;
           item.qty = action.payload.qty;

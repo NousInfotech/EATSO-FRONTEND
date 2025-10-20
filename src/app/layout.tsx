@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import "./styles/globals.css";
-import { AppProvider } from "@/components/Store/AppContext";
 import { Providers } from "@/components/Store/Provider";
 import Header from "@/components/UI/Header";
 import Footer from "@/components/UI/Footer";
@@ -17,13 +16,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className="antialiased lg:hidden md:block">
+      <body className="antialiased">
         <Providers>
-          <AppProvider>
-            <Header />
-            {children}
-            <Footer />
-          </AppProvider>
+          <Header />
+          {children}
+          <Footer />
         </Providers>
       </body>
     </html>

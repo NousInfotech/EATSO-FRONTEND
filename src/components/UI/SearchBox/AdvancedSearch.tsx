@@ -7,7 +7,7 @@ import { useAdvancedSearch } from "@/hooks/useAdvancedSearch";
 
 interface AdvancedSearchProps {
   products: Product[];
-  onSearch: (query: string) => void;
+  onSearch: (query: string) => void; // ✅ string
   onCategoryFilter: (category: string | null) => void;
   onPriceFilter: (minPrice: number, maxPrice: number) => void;
   onRatingFilter: (minRating: number) => void;
@@ -32,7 +32,6 @@ export default function AdvancedSearch({
     showFilters,
     selectedCategory,
     priceRange,
-    ratingFilter,
     suggestions,
     showSuggestions,
     maxPrice,
@@ -46,7 +45,6 @@ export default function AdvancedSearch({
     handleSuggestionClick,
     handleCategoryChange,
     handlePriceChange,
-    handleRatingChange,
     handleClearFilters,
   } = handlers;
 
@@ -54,28 +52,28 @@ export default function AdvancedSearch({
     <div className="w-full animate-slide-in-up px-5 space-y-4">
       {/* Search bar */}
       <div className="relative flex gap-2">
-        <div className="flex-1 relative">
-          <Search
-            className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"
-            size={20}
-          />
+        <div className="relative w-full flex items-center">
+          <Search className="absolute left-4 text-gray-400" size={20} />
           <input
             type="text"
-            placeholder="Search by name, category, or ingredients..."
+            placeholder="Search products..."
             value={query}
             onChange={(e) => handleSearchChange(e.target.value)}
-            onFocus={() => query && setShowFilters(true)}
-            className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-primary focus:ring-2 focus:ring-[#FAB12F]/20 bg-white text-foreground placeholder-gray-400 transition"
+            className="w-full pl-12 pr-10 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-primary focus:ring-2 focus:ring-[#FAB12F]/20 bg-white text-foreground placeholder-gray-400 transition"
           />
           {query && (
             <button
-              onClick={() => handleSearchChange("")}
-              className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+              onClick={() => {
+                handleSearchChange(""); // clear input
+                setShowFilters(false); // hide filter panel
+              }}
+              className="absolute right-2 flex items-center justify-center h-full text-gray-400 hover:text-gray-600"
             >
               <X size={18} />
             </button>
           )}
 
+          {/* Suggestions */}
           {showSuggestions && suggestions.length > 0 && (
             <div className="absolute top-full left-0 right-0 mt-2 bg-white border border-gray-200 rounded-lg shadow-lg z-10">
               {suggestions.map((sug, idx) => (
@@ -94,7 +92,7 @@ export default function AdvancedSearch({
 
         {/* Filter button */}
         <button
-          onClick={() => setShowFilters(!showFilters)}
+          onClick={() => setShowFilters((prev) => !prev)}
           className={`px-3 md:px-6 rounded-lg font-semibold transition ${
             showFilters || hasActiveFilters
               ? "bg-primary text-foreground shadow-md border border-primary"
@@ -121,6 +119,7 @@ export default function AdvancedSearch({
               categories={categories}
               selected={selectedCategory}
               onSelect={handleCategoryChange}
+              className="flex-wrap space-y-2"
             />
           </div>
 
@@ -156,11 +155,11 @@ export default function AdvancedSearch({
             </div>
           </div>
 
-          <div>
+          {/* <div>
             <h3 className="text-lg font-bold text-foreground mb-3">
               Minimum Rating
             </h3>
-            <div className="flex gap-2">
+            <div className="flex justify-center items-center gap-2">
               {[0, 3, 3.5, 4, 4.5].map((rating) => (
                 <button
                   key={rating}
@@ -171,11 +170,11 @@ export default function AdvancedSearch({
                       : "bg-white border border-gray-300 text-foreground hover:border-primary"
                   }`}
                 >
-                  {rating === 0 ? "All" : `⭐ ${rating}+`}
+                  {rating === 0 ? "All" : `${rating}+`}
                 </button>
               ))}
             </div>
-          </div>
+          </div> */}
 
           {hasActiveFilters && (
             <button

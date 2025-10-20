@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useCallback } from "react";
 import { useDispatch } from "react-redux";
 import { addToCart } from "@/components/Store/cartSlice";
 import { Product } from "@/types";
@@ -8,6 +8,7 @@ import StarRating from "./StarRating";
 import Image from "next/image";
 import Link from "next/link";
 import { generateSlug } from "@/lib/utils";
+import { TiTick } from "react-icons/ti";
 
 interface ProductCardProps {
   product: Product;
@@ -31,21 +32,15 @@ const AddToCartButton = ({ product }: { product: Product }) => {
   return (
     <button
       onClick={handleAddToCart}
-      className={`px-4 py-2 rounded-lg font-semibold text-sm transition duration-300 transform hover:scale-105 ${
+      className={`px-4 py-2 rounded-lg text-sm ${
         isAdded
           ? "bg-primary text-foreground shadow-md"
-          : "bg-primary text-foreground hover:bg-primary shadow-sm hover:shadow-md"
+          : "bg-primary text-foreground shadow-sm"
       }`}
     >
       {isAdded ? (
         <span className="flex items-center gap-1">
-          <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-            <path
-              fillRule="evenodd"
-              d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-              clipRule="evenodd"
-            />
-          </svg>
+          <TiTick size={20} />
           Added
         </span>
       ) : (
@@ -58,7 +53,7 @@ const AddToCartButton = ({ product }: { product: Product }) => {
 // ProductImage Component
 const ProductImage = ({ product }: { product: Product }) => (
   <Link href={`/${generateSlug(product.name)}`}>
-    <div className="w-full h-45 md:h-60 bg-gray-200 overflow-hidden">
+    <div className="w-full h-45 md:h-60 overflow-hidden">
       <Image
         width={1080}
         height={720}
@@ -72,17 +67,13 @@ const ProductImage = ({ product }: { product: Product }) => (
 
 // ProductInfo Component
 const ProductInfo = ({ product }: { product: Product }) => {
-  const [price, setPrice] = useState<number | null>(null);
-
-  useEffect(() => setPrice(product.price), [product.price]);
-
   return (
     <div className="p-3 md:p-4">
-      <p className="text-xs md:text-sm text-gray-500 font-medium">
+      <p className="text-xs md:text-sm text-gray-500 font-medium mb-1">
         {product.category}
       </p>
 
-      <h3 className="text-sm md:text-base font-semibold text-foreground mb-2 truncate">
+      <h3 className="text-sm md:text-base font-semibold text-foreground mb-2">
         {product.name}
       </h3>
 
@@ -92,7 +83,7 @@ const ProductInfo = ({ product }: { product: Product }) => {
 
       <div className="flex items-center justify-between">
         <span className="text-lg md:text-xl font-bold text-primary">
-          ₹{price}
+          ₹{product.price}
         </span>
         <AddToCartButton product={product} />
       </div>

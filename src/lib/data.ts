@@ -14,7 +14,7 @@ export const products: Product[] = [
     name: "Classic Burger",
     category: "Burger",
     price: 250,
-    rating: 4.5,
+    rating: 4.2,
     reviews: 120,
     description:
       "Delicious Classic Burger made with premium ingredients. Perfect for satisfying your cravings!",

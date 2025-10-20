@@ -14,6 +14,10 @@
   --color-primary: var(--primary);
 }
 
+* {
+  scroll-behavior: smooth;
+}
+
 body {
   background: var(--background);
   color: var(--foreground);
@@ -81,6 +85,7 @@ body {
     transform: scale(1.05);
   }
 }
+
 
 /* ✅ Hide scrollbar but keep scroll behavior */
 .scrollbar-hide::-webkit-scrollbar {

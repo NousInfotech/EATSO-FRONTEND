@@ -8,12 +8,14 @@ import Link from "next/link";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { ConfirmDialog } from "./ConfirmDialog";
+import { useRouter } from "next/navigation";
 
 export default function CartPage() {
   const dispatch = useDispatch<AppDispatch>();
   const cart = useSelector((state: RootState) => state.cart.cart);
   const [mounted, setMounted] = useState(false);
   const [confirmId, setConfirmId] = useState<string | null>(null);
+  const router = useRouter();
 
   useEffect(() => setMounted(true), []);
   if (!mounted)
@@ -58,14 +60,14 @@ export default function CartPage() {
   return (
     <div className="min-h-screen">
       {/* Header */}
-      <header className="mx-auto px-4 py-6 flex items-center gap-4">
-        <Link href="/">
-          <ArrowLeft size={22} />
-        </Link>
+      <header className="mx-auto px-4 py-6 flex items-center gap-4 animate-fade-in">
+        <button onClick={() => router.back()} aria-label="Go Back">
+          <ArrowLeft size={24} color="black" />
+        </button>
         <h1 className="text-2xl">Your Cart</h1>
       </header>
 
-      <main className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-[1fr_320px] gap-8 px-4">
+      <main className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-[1fr_320px] gap-8 px-4 animate-fade-in">
         {/* Cart Items */}
         <div className="space-y-4">
           {cart.map((item) => (
@@ -127,7 +129,7 @@ export default function CartPage() {
           ))}
         </div>
 
-        <hr className="text-primary" />
+        <hr/>
 
         {/* Summary */}
         <div className=" border border-gray-300 rounded-lg p-6 h-fit space-y-4 sticky top-24">

@@ -7,7 +7,7 @@ import Banner from "@/components/UI/Banner/Banner";
 import AdvancedSearch from "@/components/UI/SearchBox/AdvancedSearch";
 import ProductCard from "@/components/UI/Product/ProductCard/ProductCard";
 
-function HomeContent() {
+const Menu = () => {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [priceRange, setPriceRange] = useState<[number, number]>([0, 1000]);
@@ -39,7 +39,7 @@ function HomeContent() {
         onRatingFilter={setRatingFilter}
       />
 
-      <h2 className="text-xl md:text-2xl font-bold px-5 mb-4 mt-5">
+      <h2 className="text-xl md:text-2xl font-bold px-5 mb-4 mt-5 animate-slide-in-up">
         {selectedCategory || "All Items"} ({totalResults})
       </h2>
 
@@ -60,11 +60,6 @@ function HomeContent() {
       )}
     </main>
   );
-}
+};
 
-// -------------------------
-// App Wrapper
-// -------------------------
-export default function Menu() {
-  return <HomeContent />;
-}
+export default Menu;

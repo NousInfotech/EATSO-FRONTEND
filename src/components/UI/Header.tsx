@@ -60,7 +60,7 @@ export default function Header() {
 
             {/* Cart Badge */}
             {isMounted && cartCount > 0 && (
-              <span className="absolute -top-1 -right-1 flex items-center justify-center w-5 h-5 text-xs font-bold text-white bg-primary rounded-full">
+              <span className="absolute -top-2 -right-1 flex items-center justify-center w-5 h-5 text-xs font-bold text-white">
                 {cartCount}
               </span>
             )}

@@ -1,14 +1,14 @@
 "use client";
 
 import { useState } from "react";
-import { useDispatch } from "react-redux";
 import { useRouter } from "next/navigation";
-import { addToCart } from "@/components/Store/cartSlice";
 import { Product } from "@/types";
-import { Minus, Plus } from "lucide-react";
-import StarRating from "../ProductCard/StarRating";
 import Image from "next/image";
-import type { AppDispatch } from "@/components/Store/store";
+import Link from "next/link";
+
+import StarRating from "../ProductCard/StarRating";
+import QuantitySelector from "../ProductCard/QuantitySelector";
+import AddToCartButton from "../ProductCard/AddToCartButton";
 
 // ✅ Product Images Component
 const ProductImages = ({
@@ -52,80 +52,36 @@ const ProductImages = ({
   </div>
 );
 
-// ✅ Quantity Selector Component
-const QuantitySelector = ({
-  qty,
-  setQty,
-}: {
+// ✅ Action Buttons Component
+interface ActionButtonsProps {
+  product: Product;
   qty: number;
-  setQty: (val: number) => void;
-}) => (
-  <div className="flex items-center gap-3 rounded-lg px-4 py-2 border border-primary">
-    <button
-      onClick={() => setQty(Math.max(1, qty - 1))}
-      className="hover:bg-gray-200 rounded"
+}
+
+const ActionButtons = ({ product, qty }: ActionButtonsProps) => (
+  <div className="grid grid-cols-2 gap-3">
+    <AddToCartButton product={product} qty={qty} />
+    <Link
+      href={"/"}
+      type="button"
+      className="w-full bg-primary text-foreground px-4 py-2 rounded-lg text-center"
     >
-      <Minus size={20} />
-    </button>
-    <span className="w-8 text-center">{qty}</span>
-    <button onClick={() => setQty(qty + 1)} className="rounded">
-      <Plus size={20} />
-    </button>
+      Back to Home
+    </Link>
   </div>
 );
-// ✅ Action Buttons Component
-const ActionButtons = ({
-  product,
-  qty,
-  dispatch,
-  onContinue,
-}: {
-  product: Product;
-  qty: number;
-  dispatch: AppDispatch;
-  onContinue: () => void;
-}) => {
-  const [added, setAdded] = useState(false);
-
-  const handleAddToCart = () => {
-    for (let i = 0; i < qty; i++) dispatch(addToCart(product));
-    setAdded(true);
-    setTimeout(() => setAdded(false), 2000); // revert after 2 seconds
-  };
-
-  return (
-    <div className="flex items-center justify-center gap-3">
-      <button
-        onClick={handleAddToCart}
-        className="w-full bg-primary text-foreground py-3 rounded-lg"
-      >
-        {added ? "Added ✓" : `Add ${qty} to Cart`}
-      </button>
-      <button
-        onClick={onContinue}
-        className="w-full bg-primary text-foreground py-3 rounded-lg"
-      >
-        Back to Home
-      </button>
-    </div>
-  );
-};
 
 // ✅ Product Details Component
-const ProductDetails = ({
-  product,
-  qty,
-  setQty,
-  dispatch,
-  onContinue,
-}: {
+interface ProductDetailsProps {
   product: Product;
   qty: number;
   setQty: (val: number) => void;
-  dispatch: AppDispatch;
   onContinue: () => void;
-}) => (
+}
+
+const ProductDetails = ({ product, qty, setQty }: ProductDetailsProps) => (
   <div className="space-y-6 animate-slide-in-right px-5">
+    {/* Product Info */}
     <div>
       <p className="text-sm text-gray-500 mb-2">{product.category}</p>
       <h1 className="text-3xl font-bold text-foreground mb-4">
@@ -141,35 +97,36 @@ const ProductDetails = ({
       <p className="text-gray-500">{product.description}</p>
     </div>
 
+    {/* Price */}
     <div className="bg-gray-100 p-4 rounded-lg">
       <p className="text-gray-500 text-sm mb-2">Price</p>
       <p className="text-3xl font-bold text-primary">₹{product.price}</p>
     </div>
 
+    {/* Preparation Time */}
     <div className="bg-blue-50 p-4 rounded-lg border border-blue-200">
       <p className="text-sm mb-1">Preparation Time</p>
       <p className="font-semibold">{product.prepTime}</p>
     </div>
 
+    {/* Quantity Selector & Action Buttons */}
     <div className="space-y-4 pt-4 border-t">
       <div className="flex items-center gap-4">
         <span className="font-semibold">Quantity:</span>
         <QuantitySelector qty={qty} setQty={setQty} />
       </div>
 
-      <ActionButtons
-        product={product}
-        qty={qty}
-        dispatch={dispatch}
-        onContinue={onContinue}
-      />
+      <ActionButtons product={product} qty={qty} />
     </div>
   </div>
 );
 
 // ✅ Main ProductView Component
-const ProductView = ({ product }: { product: Product }) => {
-  const dispatch = useDispatch<AppDispatch>();
+interface ProductViewProps {
+  product: Product;
+}
+
+const ProductView = ({ product }: ProductViewProps) => {
   const router = useRouter();
   const [mainImage, setMainImage] = useState(0);
   const [qty, setQty] = useState(1);
@@ -186,7 +143,6 @@ const ProductView = ({ product }: { product: Product }) => {
           product={product}
           qty={qty}
           setQty={setQty}
-          dispatch={dispatch}
           onContinue={() => router.push("/")}
         />
       </div>

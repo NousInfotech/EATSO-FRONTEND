@@ -10,8 +10,8 @@ import type { RootState } from "../Store/store";
 export default function Header() {
   const router = useRouter();
   const pathname = usePathname();
+  // Get data from Redux store
   const cartCount = useSelector((state: RootState) => state.cart.cartCount);
-
   const [isMounted, setIsMounted] = useState(false);
 
   // ✅ Prevent hydration mismatch by waiting for client mount

@@ -7,6 +7,7 @@ export interface Product {
   reviews: number;
   description: string;
   prepTime: string;
+  qty?: number;
   images: string[];
   ingredients: string[];
 }

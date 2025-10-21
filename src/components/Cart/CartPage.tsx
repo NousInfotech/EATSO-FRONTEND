@@ -9,35 +9,51 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import { ConfirmDialog } from "./ConfirmDialog";
 import { useRouter } from "next/navigation";
+import { OrbitProgress } from "react-loading-indicators";
+import QuantitySelector from "../UI/Product/ProductCard/QuantitySelector";
 
 export default function CartPage() {
   const dispatch = useDispatch<AppDispatch>();
   const cart = useSelector((state: RootState) => state.cart.cart);
-  const [mounted, setMounted] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [confirmId, setConfirmId] = useState<string | null>(null);
   const router = useRouter();
 
-  useEffect(() => setMounted(true), []);
-  if (!mounted)
+  useEffect(() => setLoading(true), []);
+  if (!loading)
     return (
       <div className="min-h-screen flex items-center justify-center text-gray-400">
-        Loading your cart...
+        <OrbitProgress
+          variant="track-disc"
+          color="#fab12f"
+          size="medium"
+          textColor=""
+        />
       </div>
     );
 
   // Empty cart
   if (!cart.length)
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center">
-        <ShoppingCart size={64} className="text-gray-400 mb-4" />
-        <p className="text-xl text-gray-400 mb-6">Your cart is empty</p>
-        <Link
-          href="/"
-          className="px-6 py-2 bg-primary text-foreground font-bold rounded-lg"
-        >
-          Continue Shopping
-        </Link>
-      </div>
+      <>
+        <header className="mx-auto px-4 py-6 flex items-center gap-4 animate-fade-in">
+          <button onClick={() => router.back()} aria-label="Go Back">
+            <ArrowLeft size={24} color="black" />
+          </button>
+          <h1 className="text-2xl">Your Cart</h1>
+        </header>
+
+        <div className="min-h-screen flex flex-col items-center justify-center">
+          <ShoppingCart size={64} className="text-gray-400 mb-4" />
+          <p className="text-xl text-gray-400 mb-6">Your cart is empty</p>
+          <Link
+            href="/"
+            className="px-6 py-2 bg-primary text-foreground rounded-lg"
+          >
+            Continue Shopping
+          </Link>
+        </div>
+      </>
     );
 
   // Totals
@@ -54,7 +70,7 @@ export default function CartPage() {
 
   // Update qty
   const changeQty = (id: string, qty: number) => {
-    if (qty >= 1) dispatch(updateQty({ id, qty }));
+    if (qty >= 1 && qty <= 10) dispatch(updateQty({ id, qty }));
   };
 
   return (
@@ -91,23 +107,11 @@ export default function CartPage() {
                   <span className="font-bold text-primary">₹{item.price}</span>
 
                   {/* Quantity Selector */}
-                  <div className="flex items-center gap-2">
-                    <button
-                      onClick={() => changeQty(item.id, item.qty - 1)}
-                      disabled={item.qty <= 1}
-                      className="px-3 py-1 bg-gray-200 rounded hover:bg-gray-300 disabled:opacity-50"
-                    >
-                      −
-                    </button>
-                    <span>{item.qty}</span>
-                    <button
-                      onClick={() => changeQty(item.id, item.qty + 1)}
-                      className="px-3 py-1 bg-gray-200 rounded hover:bg-gray-300"
-                    >
-                      +
-                    </button>
-                  </div>
-
+                  <QuantitySelector
+                    qty={item.qty} // current quantity from Redux
+                    setQty={(val) => changeQty(item.id, val)} // update Redux state
+                    maxQty={10}
+                  />
                   {/* Delete Button */}
                   <button
                     onClick={() => setConfirmId(item.id)}
@@ -129,10 +133,10 @@ export default function CartPage() {
           ))}
         </div>
 
-        <hr/>
+        <hr />
 
         {/* Summary */}
-        <div className=" border border-gray-300 rounded-lg p-6 h-fit space-y-4 sticky top-24">
+        <div className="border border-gray-300 rounded-lg p-6 h-fit space-y-4 sticky top-24">
           <h2 className="text-xl font-semibold">Order Summary</h2>
           <div className="space-y-2 border-b pb-4 text-sm">
             <SummaryRow label="Subtotal" value={subtotal} />

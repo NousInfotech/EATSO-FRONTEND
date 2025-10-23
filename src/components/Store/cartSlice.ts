@@ -18,14 +18,21 @@ const cartSlice = createSlice({
   reducers: {
     addToCart: (state, action: PayloadAction<Product>) => {
       const existing = state.cart.find((item) => item.id === action.payload.id);
+      const addQty = action.payload.qty ?? 1; // ✅ use selected qty or default 1
+
       if (existing) {
-        existing.qty += 1;
-        state.cartCount += 1;
+        // ✅ Add the selected quantity (but limit to 10)
+        const newQty = Math.min(existing.qty + addQty, 10);
+        state.cartCount += newQty - existing.qty;
+        existing.qty = newQty;
       } else {
-        state.cart.push({ ...action.payload, qty: 1 });
-        state.cartCount += 1;
+        // ✅ Add new product with selected qty
+        const initialQty = Math.min(addQty, 10);
+        state.cart.push({ ...action.payload, qty: initialQty });
+        state.cartCount += initialQty;
       }
     },
+
     removeFromCart: (state, action: PayloadAction<string>) => {
       const item = state.cart.find((item) => item.id === action.payload);
       if (item) {

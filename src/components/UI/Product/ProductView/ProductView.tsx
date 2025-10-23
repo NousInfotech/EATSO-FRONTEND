@@ -5,10 +5,11 @@ import { useRouter } from "next/navigation";
 import { Product } from "@/types";
 import Image from "next/image";
 import Link from "next/link";
-
 import StarRating from "../ProductCard/StarRating";
 import QuantitySelector from "../ProductCard/QuantitySelector";
 import AddToCartButton from "../ProductCard/AddToCartButton";
+import ReviewSection from "./Review/ReviewSection";
+// ✅ Add this import
 
 // ✅ Product Images Component
 const ProductImages = ({
@@ -146,6 +147,9 @@ const ProductView = ({ product }: ProductViewProps) => {
           onContinue={() => router.push("/")}
         />
       </div>
+
+      {/* ✅ Add Review Section Here */}
+      <ReviewSection productId={product.id} />
     </main>
   );
 };

@@ -31,7 +31,8 @@ const AddToCartButton = ({ product, qty = 1 }: AddToCartButtonProps) => {
         return;
       }
 
-      dispatch(addToCart({ ...product, qty }));
+      // --- FIX: dispatch product with the final totalQty so cart reflects selected qty properly ---
+      dispatch(addToCart({ ...product, qty: totalQty }));
       setIsAdded(true);
       setTimeout(() => setIsAdded(false), 1500);
     },

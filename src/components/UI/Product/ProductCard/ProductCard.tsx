@@ -44,13 +44,13 @@ const ProductCard = ({ product }: ProductCardProps) => {
             <StarRating rating={product.rating} reviews={product.reviews} />
           </div>
 
-          <div className="flex items-center justify-between gap-2">
-            <span className="text-lg md:text-xl font-bold text-primary">
-              ₹{product.price}
-            </span>
-
-            <QuantitySelector qty={qty} setQty={setQty} maxQty={10} />
-
+          <div className="flex flex-col justify-between gap-3">
+            <div className="flex justify-between items-center gap-2">
+              <span className="text-lg md:text-xl font-bold text-primary">
+                ₹{product.price}
+              </span>
+              <QuantitySelector qty={qty} setQty={setQty} maxQty={10} />
+            </div>
             <AddToCartButton product={product} qty={qty} />
           </div>
         </div>

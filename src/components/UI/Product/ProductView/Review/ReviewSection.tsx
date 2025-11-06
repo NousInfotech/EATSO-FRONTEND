@@ -25,15 +25,15 @@ export const ReviewStats = ({
   const avgRating = reviews.length
     ? reviews.reduce((acc, r) => acc + r.rating, 0) / reviews.length
     : 0;
-  const ratingCounts = [5, 4, 3, 2, 1].map((star) => ({
-    star,
-    count: reviews.filter((r) => r.rating === star).length,
-    percentage:
-      reviews.length > 0
-        ? (reviews.filter((r) => r.rating === star).length / reviews.length) *
-          100
-        : 0,
-  }));
+  // const ratingCounts = [5, 4, 3, 2, 1].map((star) => ({
+  //   star,
+  //   count: reviews.filter((r) => r.rating === star).length,
+  //   percentage:
+  //     reviews.length > 0
+  //       ? (reviews.filter((r) => r.rating === star).length / reviews.length) *
+  //         100
+  //       : 0,
+  // }));
 
   return (
     <div className="bg-gray-50 p-6 rounded-lg mb-8">
@@ -47,7 +47,7 @@ export const ReviewStats = ({
             Based on {reviews.length} review{reviews.length !== 1 ? "s" : ""}
           </p>
         </div>
-        <div className="space-y-2">
+        {/* <div className="space-y-2">
           {ratingCounts.map(({ star, count, percentage }) => (
             <div key={star} className="flex items-center gap-3">
               <span className="text-sm font-medium w-12">{star} star</span>
@@ -60,7 +60,7 @@ export const ReviewStats = ({
               <span className="text-sm text-gray-600 w-8">{count}</span>
             </div>
           ))}
-        </div>
+        </div> */}
       </div>
     </div>
   );

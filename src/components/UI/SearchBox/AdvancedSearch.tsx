@@ -49,17 +49,17 @@ export default function AdvancedSearch({
   } = handlers;
 
   return (
-    <div className="w-full animate-slide-in-up px-5 space-y-4">
+    <div className="w-full animate-slide-in-up px-5 space-y-4 sticky top-0 z-100 bg-white p-4">
       {/* Search bar */}
-      <div className="relative flex gap-2">
+      <div className="flex gap-2">
         <div className="relative w-full flex items-center">
-          <Search className="absolute left-4 text-gray-400" size={20} />
+          <Search className="absolute left-4 text-gray-300" size={20} />
           <input
             type="text"
             placeholder="Search products..."
             value={query}
             onChange={(e) => handleSearchChange(e.target.value)}
-            className="w-full pl-12 pr-10 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-primary focus:ring-2 focus:ring-[#FAB12F]/20 bg-white text-foreground placeholder-gray-400 transition"
+            className="w-full pl-12 pr-10 py-3 border border-primary rounded-lg focus:outline-none focus:border-primary focus:ring-2 focus:ring-[#FAB12F]/20 bg-white text-foreground placeholder-gray-400 transition"
           />
           {query && (
             <button
@@ -67,7 +67,7 @@ export default function AdvancedSearch({
                 handleSearchChange(""); // clear input
                 setShowFilters(false); // hide filter panel
               }}
-              className="absolute right-2 flex items-center justify-center h-full text-gray-400 hover:text-gray-600"
+              className="absolute right-2 flex items-center justify-center h-full"
             >
               <X size={18} />
             </button>
@@ -112,7 +112,7 @@ export default function AdvancedSearch({
 
       {/* Filters Panel */}
       {showFilters && (
-        <div className="bg-gray-50 border border-gray-200 rounded-lg p-6 space-y-6 animate-slide-in-up">
+        <div className="border border-primary rounded-lg p-6 space-y-6 animate-slide-in-up">
           <div>
             <h3 className="text-lg font-bold text-foreground mb-3">Category</h3>
             <CategoryTags
@@ -136,7 +136,7 @@ export default function AdvancedSearch({
                 onChange={(e) =>
                   handlePriceChange([parseInt(e.target.value), priceRange[1]])
                 }
-                className="w-full"
+                className="w-full accent-primary"
               />
               <input
                 type="range"
@@ -146,9 +146,9 @@ export default function AdvancedSearch({
                 onChange={(e) =>
                   handlePriceChange([priceRange[0], parseInt(e.target.value)])
                 }
-                className="w-full"
+                className="w-full accent-primary"
               />
-              <div className="flex justify-between text-sm text-gray-600 bg-white p-3 rounded border border-gray-300">
+              <div className="flex justify-between text-sm bg-white p-3 rounded border border-primary">
                 <span>₹{priceRange[0]}</span>
                 <span>₹{priceRange[1]}</span>
               </div>

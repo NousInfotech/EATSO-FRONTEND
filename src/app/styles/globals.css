@@ -86,7 +86,6 @@ body {
   }
 }
 
-
 /* ✅ Hide scrollbar but keep scroll behavior */
 .scrollbar-hide::-webkit-scrollbar {
   display: none;
@@ -119,4 +118,68 @@ body {
 
 .animate-pulse-btn {
   animation: pulse 0.6s ease-in-out;
+}
+
+/* Bubble base style */
+.bubble {
+  position: absolute;
+  background: white;
+  font-size: 0.95rem;
+  padding: 10px;
+  border-radius: 999px;
+  box-shadow: 0 2px 46px 0 rgba(0, 0, 0, 0.36);
+  white-space: nowrap;
+  z-index: 20;
+}
+
+/* Bubble positions */
+.bubble-1 {
+  top: -20px;
+  left: 160px;
+}
+
+.bubble-2 {
+  bottom: 50px;
+  right: 80px;
+}
+
+@layer utilities {
+  @keyframes zoom1 {
+    0%,
+    100% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.08);
+    }
+  }
+  .animate-float1 {
+    animation: zoom1 5s ease-in-out infinite;
+  }
+
+  @keyframes zoom2 {
+    0%,
+    100% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.12);
+    }
+  }
+  .animate-float2 {
+    animation: zoom2 5.5s ease-in-out infinite;
+  }
+
+  @keyframes zoom3 {
+    0%,
+    100% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.1);
+    }
+  }
+  .animate-float3 {
+    animation: zoom3 5.2s ease-in-out infinite;
+  }
 }

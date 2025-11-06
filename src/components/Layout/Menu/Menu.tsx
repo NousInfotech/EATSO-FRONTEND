@@ -6,6 +6,7 @@ import { useFilter } from "@/hooks/useFilter"; // your custom hook
 import Banner from "@/components/UI/Banner/Banner";
 import AdvancedSearch from "@/components/UI/SearchBox/AdvancedSearch";
 import ProductCard from "@/components/UI/Product/ProductCard/ProductCard";
+import Banner2 from "@/components/UI/Banner/Banner2";
 
 const Menu = () => {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
@@ -30,7 +31,7 @@ const Menu = () => {
   return (
     <main className="space-y-5">
       <Banner />
-
+      <Banner2 />
       <AdvancedSearch
         products={allProducts}
         onSearch={setSearchQuery}
